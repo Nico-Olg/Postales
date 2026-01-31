@@ -3,13 +3,15 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
+  base: '/Postales/',
   server: {
     port: 3000,
     open: true
   },
   build: {
-    outDir: 'dist',
+    outDir: 'docs',
     sourcemap: false,
+     emptyOutDir: true,
     minify: 'terser',
     rollupOptions: {
       output: {
@@ -24,3 +26,4 @@ export default defineConfig({
     include: ['react', 'react-dom', 'framer-motion']
   }
 });
+
