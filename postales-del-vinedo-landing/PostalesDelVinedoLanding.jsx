@@ -447,7 +447,7 @@ const Location = () => {
                   <path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z" fill="currentColor"/>
                 </svg>
                 <div>
-                  <strong>35 min desde Paraná</strong>
+                  <strong>2 hs desde Paraná</strong>
                   <span>Acceso directo por ruta asfaltada</span>
                 </div>
               </div>
@@ -470,18 +470,18 @@ const Location = () => {
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            {/* Placeholder for map - replace with actual map component or image */}
-            <div className="map-placeholder">
-              <svg viewBox="0 0 400 300" className="map-svg">
-                <rect width="400" height="300" fill="#f5f1ed"/>
-                <circle cx="200" cy="150" r="8" fill="#2c5f2d"/>
-                <text x="200" y="180" textAnchor="middle" fill="#2c5f2d" fontSize="14" fontWeight="600">
-                  Postales del Viñedo
-                </text>
-                <text x="200" y="195" textAnchor="middle" fill="#97bc62" fontSize="12">
-                  La Paz, Entre Ríos
-                </text>
-              </svg>
+            {/* Google Maps Embed - Interactivo con zoom, navegación, etc. */}
+            <div className="map-container">
+              <iframe
+                title="Ubicación Postales del Viñedo - La Paz, Entre Ríos"
+                src="https://maps.google.com/maps?q=-30.750293528738894, -59.61139471952832&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen=""
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
             </div>
           </motion.div>
         </div>
@@ -781,16 +781,25 @@ const Footer = () => {
 const PostalesDelVinedoLanding = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
-      const currentProgress = (window.pageYOffset / totalScroll) * 100;
-      setScrollProgress(currentProgress);
-    };
+ useEffect(() => {
+  const handleScroll = () => {
+    const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
+    const currentProgress = totalScroll > 0 ? (window.pageYOffset / totalScroll) : 0;
+    const progressPct = currentProgress * 100;
+    setScrollProgress(progressPct);
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    // NUEVO: mover el punto de mezcla (blend)
+    // Arriba: 15% (casi todo verde)
+    // Abajo: 85% (casi todo vino)
+    const blend = 15 + (currentProgress * 70); // 15% -> 85%
+    document.body.style.setProperty('--blend-point', `${blend}%`);
+  };
+
+  window.addEventListener('scroll', handleScroll);
+  handleScroll(); // inicial
+  return () => window.removeEventListener('scroll', handleScroll);
+}, []);
+
 
   return (
     <div className="app">
