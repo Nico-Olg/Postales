@@ -4,12 +4,13 @@
   "description": "Landing page premium para Postales del Viñedo - Complejo vitivinícola residencial en La Paz, Entre Ríos",
   "private": true,
   "dependencies": {
+    "framer-motion": "^10.16.4",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "framer-motion": "^10.16.4"
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.2.0",
+    "terser": "^5.46.0",
     "vite": "^5.0.0"
   },
   "scripts": {
