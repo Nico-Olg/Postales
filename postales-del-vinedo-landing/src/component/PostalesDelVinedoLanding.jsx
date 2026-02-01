@@ -346,9 +346,9 @@ const Investment = () => {
     "Viñedo privado plantado y mantenido",
     "Participación en bodega común",
     "Producción de vino personalizado",
-    "Renta del complejo turístico",
+    "Comercialización mediante Club del Vino",
     "Acceso a todas las amenities",
-    "ROI proyectado atractivo"
+    
   ];
 
   return (
