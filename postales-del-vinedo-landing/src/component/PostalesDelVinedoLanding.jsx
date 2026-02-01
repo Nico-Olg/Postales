@@ -239,11 +239,12 @@ const Concept = () => {
       title: "Tu Viñedo Personal",
       description: "800m² con producción de vino exclusiva. Mantenimiento profesional incluido. Tu propia bodega en casa."
     },
-    {
-      icon: "💰",
-      title: "Renta Pasiva",
-      description: "Ingresos del complejo turístico sin gestionar nada. ROI proyectado atractivo desde el primer año."
-    },
+   {
+  icon: "📈",
+  title: "Valor Productivo del Lote",
+  description: "Tu viñedo genera producción propia con potencial de comercialización futura mediante el Club del Vino y canales exclusivos."
+},
+
     {
       icon: "🌱",
       title: "Sustentabilidad Total",
