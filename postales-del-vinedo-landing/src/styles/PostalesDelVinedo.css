@@ -743,9 +743,9 @@ body::before { display: none; }
 }
 
 .gallery-image.vineyard-sunset { background-image: url('/images/vineyard-sunset.png'); }
-.gallery-image.winery { background-image: url('/images/winery.svg'); }
-.gallery-image.cabin { background-image: url('/images/cabin.svg'); }
-.gallery-image.glamping { background-image: url('/images/glamping.jpg'); }
+.gallery-image.winery { background-image: url('/images/bodega-madera.png'); }
+.gallery-image.cabin { background-image: url('/images/glamping.png'); }
+.gallery-image.glamping { background-image: url('/images/glamping-exclusivo.png'); }
 
 .gallery-overlay {
   position: absolute;
