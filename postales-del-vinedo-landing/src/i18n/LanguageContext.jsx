@@ -1,8 +1,9 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import es from './es';
 import en from './en';
+import pt from './pt';
 
-const translations = { es, en };
+const translations = { pt, es, en };
 
 const LanguageContext = createContext();
 
@@ -16,8 +17,8 @@ export const LanguageProvider = ({ children }) => {
     document.documentElement.lang = language;
   }, [language]);
 
-  const toggleLanguage = useCallback(() => {
-    setLanguage((prev) => (prev === 'es' ? 'en' : 'es'));
+  const changeLanguage = useCallback((lang) => {
+    if (translations[lang]) setLanguage(lang);
   }, []);
 
   const t = useCallback(
@@ -26,7 +27,7 @@ export const LanguageProvider = ({ children }) => {
   );
 
   return (
-    <LanguageContext.Provider value={{ language, toggleLanguage, t }}>
+    <LanguageContext.Provider value={{ language, changeLanguage, t }}>
       {children}
     </LanguageContext.Provider>
   );
