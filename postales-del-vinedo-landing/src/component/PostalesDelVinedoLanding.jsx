@@ -137,8 +137,15 @@ const Hero = () => {
   return (
     <section ref={ref} className="hero">
       <motion.div className="hero-bg" style={{ y }}>
-        {/* Placeholder for hero image - replace with actual photo */}
-        <div className="hero-image" />
+        <video
+          className="hero-video"
+          autoPlay
+          loop
+          muted
+          playsInline
+        >
+          <source src="/images/Postales del viñedo.mp4" type="video/mp4" />
+        </video>
       </motion.div>
 
       <motion.div
