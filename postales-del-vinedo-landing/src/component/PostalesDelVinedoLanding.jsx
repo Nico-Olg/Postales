@@ -122,10 +122,29 @@ const WhatsAppButton = () => {
   );
 };
 
-// Hero Section with parallax
+// Hero slider images
+const heroImages = [
+  '/images/bodega.png',
+  '/images/bodega-madera.png',
+  '/images/glamping.png',
+  '/images/glamping-exclusivo.png',
+  '/images/maquina-arado.png',
+  '/images/persona-vinedo.png',
+  '/images/postales-aerea.png',
+  '/images/tronco-sarmiento.png',
+  '/images/uva.png',
+  '/images/vineyard-sunset.png',
+  '/images/vinedo-atardecer.png',
+  '/images/vinedos.png',
+  '/images/viogner.png',
+];
+
+// Hero Section with parallax and image slider
 const Hero = () => {
   const { t } = useTranslation();
   const ref = useRef(null);
+  const [currentSlide, setCurrentSlide] = useState(0);
+
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"]
@@ -134,18 +153,28 @@ const Hero = () => {
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
   const opacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
 
+  // Auto-advance slides
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % heroImages.length);
+    }, 5000); // 5 seconds per slide
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <section ref={ref} className="hero">
       <motion.div className="hero-bg" style={{ y }}>
-        <video
-          className="hero-video"
-          autoPlay
-          loop
-          muted
-          playsInline
-        >
-          <source src="/images/Postales del viñedo.mp4" type="video/mp4" />
-        </video>
+        <AnimatePresence mode="sync">
+          <motion.div
+            key={currentSlide}
+            className="hero-slide"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1.5, ease: "easeInOut" }}
+            style={{ backgroundImage: `url(${heroImages[currentSlide]})` }}
+          />
+        </AnimatePresence>
       </motion.div>
 
       <motion.div
