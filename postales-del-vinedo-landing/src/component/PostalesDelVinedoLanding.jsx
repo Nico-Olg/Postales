@@ -122,38 +122,30 @@ const WhatsAppButton = () => {
   );
 };
 
-// Fallback local images (used if Google Drive API fails)
-const fallbackImages = [
-  '/images/bodega.png',
-  '/images/bodega-madera.png',
-  '/images/cabernet-sauvignon.png',
-  '/images/glamping.png',
-  '/images/glamping-exclusivo.png',
-  '/images/maquina-arado.png',
-  '/images/persona-vinedo.png',
-  '/images/postales-aerea.png',
-  '/images/tronco-sarmiento.png',
-  '/images/uva.png',
-  '/images/mujer-entre-vinedos.png',
-  '/images/vineyard-sunset.png',
-  '/images/vinedo-atardecer.png',
-  '/images/vinedos.png',
-  '/images/viogner.png',
-];
+// Static loading image
+const LOADING_IMAGE = '/images/postales-aerea.png';
 
 // Google Apps Script URL for fetching images from Drive
 const DRIVE_IMAGES_API = 'https://script.google.com/macros/s/AKfycbzAO7rY0-3wdkaHhgXcLdYaVYjnHtmzN5PloST-wFprE3oMkI1RKI0OIurxHehZsvyt1w/exec';
 
-// Preload images utility
-const preloadImages = (urls) => {
-  return Promise.all(
-    urls.map(url => new Promise((resolve) => {
-      const img = new Image();
-      img.onload = () => resolve(url);
-      img.onerror = () => resolve(null); // Skip failed images
-      img.src = url;
-    }))
-  ).then(results => results.filter(url => url !== null));
+// Preload a single image with timeout
+const preloadImage = (url, timeout = 15000) => {
+  return new Promise((resolve) => {
+    const img = new Image();
+    const timer = setTimeout(() => {
+      resolve(null);
+    }, timeout);
+
+    img.onload = () => {
+      clearTimeout(timer);
+      resolve(url);
+    };
+    img.onerror = () => {
+      clearTimeout(timer);
+      resolve(null);
+    };
+    img.src = url;
+  });
 };
 
 // Hero Section with parallax and image slider
@@ -161,8 +153,8 @@ const Hero = () => {
   const { t } = useTranslation();
   const ref = useRef(null);
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [images, setImages] = useState(fallbackImages);
-  const [imagesLoaded, setImagesLoaded] = useState(false);
+  const [images, setImages] = useState([LOADING_IMAGE]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -172,40 +164,71 @@ const Hero = () => {
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
   const opacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
 
-  // Fetch and preload images from Google Drive on mount
+  // Fetch image via proxy and convert to data URL
+  const fetchImageAsDataUrl = async (imageId, mimeType) => {
+    try {
+      const response = await fetch(`${DRIVE_IMAGES_API}?imageId=${imageId}`);
+      const base64 = await response.text();
+
+      if (base64 && !base64.startsWith('{')) {
+        return `data:${mimeType};base64,${base64}`;
+      }
+      return null;
+    } catch (error) {
+      return null;
+    }
+  };
+
+  // Fetch and load images from Google Drive on mount
   useEffect(() => {
-    const fetchDriveImages = async () => {
+    let isMounted = true;
+    let hasLoaded = false;
+
+    const loadImages = async () => {
+      // Prevent double-loading in StrictMode
+      if (hasLoaded) return;
+      hasLoaded = true;
+
       try {
         const response = await fetch(DRIVE_IMAGES_API);
         const data = await response.json();
+
         if (data.images && data.images.length > 0) {
-          const driveUrls = data.images.map(img => img.url);
-          // Preload all images before using them
-          const loadedUrls = await preloadImages(driveUrls);
-          if (loadedUrls.length > 0) {
+          // Fetch each image through the proxy
+          const results = await Promise.all(
+            data.images.map(async (img) => {
+              return await fetchImageAsDataUrl(img.id, img.mimeType);
+            })
+          );
+
+          const loadedUrls = results.filter(url => url !== null);
+
+          if (isMounted && loadedUrls.length > 0) {
             setImages(loadedUrls);
+            setCurrentSlide(0);
+            setIsLoading(false);
           }
         }
       } catch (error) {
-        console.log('Using fallback images:', error);
+        if (isMounted) setIsLoading(false);
       }
-      setImagesLoaded(true);
     };
 
-    // Also preload fallback images
-    preloadImages(fallbackImages).then(() => {
-      fetchDriveImages();
-    });
+    loadImages();
+
+    return () => { isMounted = false; };
   }, []);
 
-  // Auto-advance slides
+  // Auto-advance slides only after images are loaded
   useEffect(() => {
-    if (images.length === 0) return;
+    if (isLoading || images.length <= 1) return;
+
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % images.length);
-    }, 5000); // 5 seconds per slide
+    }, 5000);
+
     return () => clearInterval(interval);
-  }, [images.length]);
+  }, [isLoading, images.length]);
 
   return (
     <section ref={ref} className="hero">
