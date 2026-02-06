@@ -109,7 +109,7 @@ const WhatsAppButton = () => {
 
   return (
     <a
-      href={`https://wa.me/5493512440572?text=${t('whatsapp.prefilled')}`}
+      href={`https://wa.me/5493434283783?text=${t('whatsapp.prefilled')}`}
       className={`whatsapp-fab ${visible ? 'whatsapp-fab--visible' : ''}`}
       target="_blank"
       rel="noopener noreferrer"
@@ -798,7 +798,7 @@ const Contact = () => {
 
   try {
     // REEMPLAZÁ ESTA URL con la que copiaste de Google Apps Script
-    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx0mh3IIV5yrWldjaIZLuKQjxN0MwBA1QghGeDGI3MR8KXqhhw12OknYrrbBCvYIkES1Q/exec';
+    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwhcUbdP0J_HVku10sWjwmrOVthe8JMEcP1_uxMEZhNUhrNQdtyppSyyL_or1KY9SyT4g/exec';
 
     const response = await fetch(GOOGLE_SCRIPT_URL, {
       method: 'POST',
@@ -972,13 +972,13 @@ const Footer = () => {
 
           <div className="footer-contact">
             <h4 className="footer-title">{t('footer.contact_title')}</h4>
-            <a href="mailto:info@postalesdelvinedo.com" className="footer-link">
-              info@postalesdelvinedo.com
+            <a href="mailto:cabanasdelvinedo@gmail.com" className="footer-link">
+              cabanasdelvinedo@gmail.com
             </a>
-            <a href="https://wa.me/5493512440572" className="footer-link">
-              +54 9 351 2440572
+            <a href="https://wa.me/5493434283783" className="footer-link">
+              +54 9 343 44283783
             </a>
-            <a href="https://wa.me/5493512440572" className="footer-link" target="_blank" rel="noopener noreferrer">
+            <a href="https://wa.me/5493434283783" className="footer-link" target="_blank" rel="noopener noreferrer">
               WhatsApp
             </a>
           </div>
@@ -986,12 +986,12 @@ const Footer = () => {
           <div className="footer-social">
             <h4 className="footer-title">{t('footer.follow_title')}</h4>
             <div className="social-links">
-              <a href="#" className="social-link" aria-label={t('footer.instagram_aria')}>
+              <a href="https://www.instagram.com/cabanasdelvinedo/" className="social-link" aria-label={t('footer.instagram_aria')}>
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M12 2c2.717 0 3.056.01 4.122.06 1.065.05 1.79.217 2.428.465.66.254 1.216.598 1.772 1.153.509.5.902 1.105 1.153 1.772.247.637.415 1.363.465 2.428.047 1.066.06 1.405.06 4.122 0 2.717-.01 3.056-.06 4.122-.05 1.065-.218 1.79-.465 2.428a4.883 4.883 0 01-1.153 1.772c-.5.508-1.105.902-1.772 1.153-.637.247-1.363.415-2.428.465-1.066.047-1.405.06-4.122.06-2.717 0-3.056-.01-4.122-.06-1.065-.05-1.79-.218-2.428-.465a4.89 4.89 0 01-1.772-1.153 4.904 4.904 0 01-1.153-1.772c-.248-.637-.415-1.363-.465-2.428C2.013 15.056 2 14.717 2 12c0-2.717.01-3.056.06-4.122.05-1.066.217-1.79.465-2.428a4.88 4.88 0 011.153-1.772A4.897 4.897 0 015.45 2.525c.638-.248 1.362-.415 2.428-.465C8.944 2.013 9.283 2 12 2zm0 5a5 5 0 100 10 5 5 0 000-10zm6.5-.25a1.25 1.25 0 10-2.5 0 1.25 1.25 0 002.5 0zM12 9a3 3 0 110 6 3 3 0 010-6z"/>
                 </svg>
               </a>
-              <a href="#" className="social-link" aria-label={t('footer.facebook_aria')}>
+              <a href="https://www.facebook.com/cabanasdelvinedo" className="social-link" aria-label={t('footer.facebook_aria')}>
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
                 </svg>
